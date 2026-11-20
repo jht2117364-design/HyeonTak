@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#10243d">
+  <meta name="description" content="한국은행 2023년 산업연관표 기반 데이터 탐색, 생산·부가가치·수입 유발효과 및 산업 간 비교 분석 대시보드">
+  <title>IO Insight 2023 | 산업연관분석 대시보드</title>
+  <link rel="stylesheet" href="./style.css">
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="주 메뉴와 데이터 설정">
+      <div class="brand">
+        <span class="brand-symbol" aria-hidden="true">▦</span>
+        <div><div class="brand-name">IO <span>Insight</span></div><span class="brand-sub">2023 · Input–Output Analytics</span></div>
+      </div>
+      <p class="nav-heading">WORKSPACE</p>
+      <nav class="nav-list" aria-label="분석 페이지">
+        <button class="nav-link active" type="button" data-nav="dashboard" aria-current="page"><span class="nav-symbol">◫</span> 대시보드</button>
+        <button class="nav-link" type="button" data-nav="explore"><span class="nav-symbol">▤</span> 데이터 탐색</button>
+        <button class="nav-link" type="button" data-nav="simulate"><span class="nav-symbol">⌁</span> 유발효과 분석</button>
+        <button class="nav-link" type="button" data-nav="compare"><span class="nav-symbol">▥</span> 산업 간 비교</button>
+        <button class="nav-link" type="button" data-nav="methods"><span class="nav-symbol">ⓘ</span> 분석 방법 안내</button>
+      </nav>
+      <div class="dataset-box" aria-label="분석 데이터 설정">
+        <div class="dataset-title"><span>DATA CONNECTION</span><span class="dataset-live" id="global-state">미연결</span></div>
+        <label for="level">분석 산업분류</label>
+        <select id="level">
+          <option value="large">통합대분류 · 33개</option>
+          <option value="medium">통합중분류 · 83개</option>
+          <option value="small">통합소분류 · 165개</option>
+          <option value="basic">기본부문 · 380개</option>
+        </select>
+        <button type="button" id="load" class="btn btn-accent btn-block">Excel 데이터 불러오기 <span aria-hidden="true">↗</span></button>
+        <p id="status" class="dataset-status" role="status" aria-live="polite">산업분류를 선택하고 데이터 불러오기를 누르세요.</p>
+      </div>
+      <div class="sidebar-foot">
+        <span class="small-dot"></span><span>한국은행 2023년 산업연관표</span>
+        <span class="foot-muted">산업조직론 · 과제물 1</span>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div class="topbar-location"><span>ANALYTICS</span><span class="slash">/</span><strong id="current-page">대시보드</strong></div>
+        <div class="topbar-right"><span class="data-pill" id="ready-badge"><span class="pill-dot"></span>데이터 미연결</span><span class="year-badge">2023 DATA</span></div>
+      </header>
+      <main id="main-content">
+        <section class="view" data-page="dashboard" aria-labelledby="dashboard-title">
+          <div class="hero">
+            <div class="hero-content">
+              <span class="hero-tag"><span class="tag-dot"></span> BANK OF KOREA DATA · 2023</span>
+              <h1 id="dashboard-title">산업의 연결을<br><em>숫자로 읽다.</em></h1>
+              <p>2023년 산업연관표를 바탕으로 산업별 거래구조를 탐색하고, 최종수요 변화가 생산·부가가치·수입에 미치는 파급효과를 분석합니다.</p>
+              <div class="hero-actions"><button type="button" class="btn btn-white" data-nav="simulate">유발효과 분석하기 <span>↗</span></button><button type="button" class="btn btn-ghost" data-nav="compare">산업 비교하기 <span>→</span></button></div>
+            </div>
+            <div class="hero-art" aria-hidden="true"><div class="orbit orbit-outer"></div><div class="orbit orbit-mid"></div><div class="orbit orbit-inner"></div><div class="orb orb-a"></div><div class="orb orb-b"></div><div class="orb orb-c"></div><span class="orbit-center">IO<span>2023</span></span><span class="art-label label-a">PRODUCTION</span><span class="art-label label-b">VALUE ADDED</span><span class="art-label label-c">IMPORTS</span></div>
+          </div>
+
+          <div class="section-head"><div><span class="eyebrow">COVERAGE</span><h2>분석 데이터 범위</h2></div><p>산업분류 수준에 따라 더 세밀한 거래·파급효과를 확인할 수 있습니다.</p></div>
+          <div class="metric-grid">
+            <div class="metric-card"><div class="metric-top"><span>통합대분류</span><span class="metric-icon">01</span></div><div class="metric-number">33<span>개 부문</span></div><div class="metric-line"><span class="line-fill" style="width:22%"></span></div><small>산업 전체 흐름 파악</small></div>
+            <div class="metric-card"><div class="metric-top"><span>통합중분류</span><span class="metric-icon">02</span></div><div class="metric-number">83<span>개 부문</span></div><div class="metric-line"><span class="line-fill" style="width:38%"></span></div><small>산업군 간 관계 분석</small></div>
+            <div class="metric-card"><div class="metric-top"><span>통합소분류</span><span class="metric-icon">03</span></div><div class="metric-number">165<span>개 부문</span></div><div class="metric-line"><span class="line-fill" style="width:64%"></span></div><small>세부 산업의 파급효과</small></div>
+            <div class="metric-card"><div class="metric-top"><span>기본부문</span><span class="metric-icon">04</span></div><div class="metric-number">380<span>개 부문</span></div><div class="metric-line"><span class="line-fill" style="width:100%"></span></div><small>개별 상품·산업 정밀 분석</small></div>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="surface feature-example">
+              <div class="card-head"><div><span class="eyebrow">VERIFIED CASE STUDY</span><h3>같은 100억원, 다른 파급효과</h3></div><span class="chip">통합대분류 · 예시</span></div>
+              <p class="muted">건설업과 교육서비스에 각각 100억원의 국산품 최종수요가 증가한다고 가정한 결과입니다.</p>
+              <div class="case-bars"><div class="case-row"><div class="case-label"><span>건설업</span><strong>205.84억원</strong></div><div class="case-track"><div class="case-fill case-blue" style="width:100%"></div></div></div><div class="case-row"><div class="case-label"><span>교육서비스</span><strong>156.90억원</strong></div><div class="case-track"><div class="case-fill case-teal" style="width:76.23%"></div></div></div></div>
+              <div class="case-bottom"><span><span class="legend-dot blue"></span> 생산유발액</span><button type="button" class="text-link" data-nav="compare">직접 비교해 보기 <span>↗</span></button></div>
+              <p class="card-note">원본 계수로 계산한 가상 시나리오입니다. 실제 GDP 또는 정책의 인과효과를 뜻하지 않습니다.</p>
+            </article>
+            <article class="surface starter-card">
+              <div class="card-head"><div><span class="eyebrow">GET STARTED</span><h3>4단계 분석 워크플로</h3></div></div>
+              <div class="steps"><div class="step-row"><span>01</span><div><strong>Excel 데이터 불러오기</strong><p>왼쪽에서 산업분류를 선택합니다.</p></div></div><div class="step-row"><span>02</span><div><strong>거래표·계수표 살펴보기</strong><p>산업코드와 산업명으로 검색합니다.</p></div></div><div class="step-row"><span>03</span><div><strong>최종수요 변화 분석</strong><p>생산·부가가치·수입유발액을 계산합니다.</p></div></div><div class="step-row"><span>04</span><div><strong>산업 간 결과 비교</strong><p>두 시나리오를 비교하고 CSV로 저장합니다.</p></div></div></div>
+              <div id="dashboard-ready" class="ready-callout">현재 선택한 Excel을 먼저 불러오세요.</div>
+            </article>
+          </div>
+          <div class="source-strip"><span class="source-icon">ⓘ</span>출처: 한국은행 「2023년 산업연관표(연장표)」 · 생산자가격 기준 <a href="https://www.bok.or.kr/portal/bbs/B0000501/view.do?menuNo=201264&amp;nttId=10093668" target="_blank" rel="noopener">원자료 보기 ↗</a></div>
+        </section>
+
+        <section class="view" data-page="explore" aria-labelledby="explore-title" hidden>
+          <div class="page-heading"><div><span class="eyebrow">01 / DATA EXPLORER</span><h1 id="explore-title">산업연관표 <em>데이터 탐색</em></h1><p>원본 Excel의 시트, 산업코드, 행·열을 조회하고 중간거래와 산업 간 연계를 살펴봅니다.</p></div><span id="explore-count" class="section-tag">Excel 불러오기 필요</span></div>
+          <div class="surface filter-panel"><div class="panel-caption"><strong>검색 조건</strong><span>시트와 행 산업을 선택하세요</span></div><div class="filter-grid"><label><span>분석 시트</span><select id="sheet" disabled></select></label><label><span>행 산업 검색</span><input id="row-search" type="search" placeholder="산업명 또는 코드" disabled></label><label><span>조회할 산업·계정</span><select id="row" disabled></select></label><label><span>열 산업·항목 검색</span><input id="col-search" type="search" placeholder="열 이름으로 검색" disabled></label></div></div>
+          <div class="surface result-panel"><div class="result-section-head"><div><span class="eyebrow">EXCEL DATA</span><h3 id="explore-caption">조회 결과</h3></div><span class="chip" id="unit">단위: —</span></div><div class="table-wrap"><table><thead><tr><th>열 코드</th><th>산업·항목</th><th class="number">조회 값</th></tr></thead><tbody id="cells"><tr><td colspan="3" class="empty">Excel을 불러오면 데이터가 표시됩니다.</td></tr></tbody></table></div><p class="fineprint">일반 거래표의 금액 단위는 백만원이며, 투입·유발계수표는 무차원 계수입니다. 시트별 행·열의 경제학적 의미는 다를 수 있습니다.</p></div>
+        </section>
+
+        <section class="view" data-page="simulate" aria-labelledby="simulate-title" hidden>
+          <div class="page-heading"><div><span class="eyebrow">02 / IMPACT SIMULATOR</span><h1 id="simulate-title">경제적 <em>파급효과 분석</em></h1><p>국산품 최종수요 증가에 따른 산업별 총산출, 부가가치, 수입 유발액을 계산합니다.</p></div><span class="section-tag">입력 단위 · 억원</span></div>
+          <div class="surface input-panel"><div class="panel-caption"><strong>분석 조건 설정</strong><span>동시에 여러 산업을 추가할 수 있습니다</span></div><form id="scenario" class="scenario-form"><label><span>산업 검색</span><input id="sector-search" type="search" placeholder="예: 건설, 교육, F" disabled></label><label><span>산업 선택</span><select id="sector" disabled></select></label><label><span>최종수요 증가액 (억원)</span><input id="amount" type="number" min="0.01" step="any" value="100" disabled></label><button id="add" type="submit" class="btn btn-primary" disabled>+ 시나리오 추가</button></form><div class="quick-input"><span>빠른 금액 설정</span><button type="button" data-amount="50">50억원</button><button type="button" data-amount="100">100억원</button><button type="button" data-amount="500">500억원</button></div></div>
+          <div class="surface basket-panel"><div class="result-section-head"><div><span class="eyebrow">SCENARIO LIST</span><h3>분석할 시나리오</h3></div><button id="clear" type="button" class="text-link">모두 지우기</button></div><ul id="basket" class="basket"><li class="empty">추가한 산업이 없습니다.</li></ul><div class="action-footer"><button id="run" type="button" class="btn btn-primary" disabled>유발효과 계산하기 ↗</button><span id="sim-status" role="status" aria-live="polite">먼저 산업을 추가하세요.</span></div></div>
+          <div id="results" class="analysis-output" hidden><div class="result-section-head"><div><span class="eyebrow">SIMULATION RESULT</span><h2>분석 결과</h2></div><button id="download" class="btn btn-outline" type="button">CSV 다운로드 ↓</button></div><div id="cards" class="result-cards"></div><div id="multiplier" class="insight-banner"></div><div class="surface chart-panel"><div class="result-section-head"><div><span class="eyebrow">SECTOR RANKING</span><h3>생산유발액 상위 산업</h3></div><span class="chip">상위 12개</span></div><div id="bars" class="bar-chart"></div></div><div class="surface result-panel"><div class="result-section-head"><h3>전체 산업별 계산 결과</h3><span class="chip">단위 · 억원</span></div><div class="table-wrap"><table><thead><tr><th>코드</th><th>산업명</th><th class="number">생산유발액</th><th class="number">부가가치유발액</th><th class="number">수입유발액</th></tr></thead><tbody id="result-rows"></tbody></table></div></div></div>
+        </section>
+
+        <section class="view" data-page="compare" aria-labelledby="compare-title" hidden>
+          <div class="page-heading"><div><span class="eyebrow">03 / INDUSTRY COMPARISON</span><h1 id="compare-title">두 산업의 차이를 <em>비교하다</em></h1><p>동일한 분류의 두 산업에 최종수요 충격을 설정하고 유발효과·배율·산업별 분포를 비교합니다.</p></div><span class="section-tag">신규 비교 분석</span></div>
+          <div class="compare-setup"><div class="surface compare-input"><div class="compare-input-title"><span class="compare-marker marker-a">A</span><div><strong>비교 산업 A</strong><p>첫 번째 산업의 최종수요 증가</p></div></div><label><span>산업 선택</span><select id="cmp-a" disabled></select></label><label><span>수요 증가액 (억원)</span><input id="cmp-amount-a" type="number" min="0.01" step="any" value="100" disabled></label></div><div class="compare-vs">VS</div><div class="surface compare-input"><div class="compare-input-title"><span class="compare-marker marker-b">B</span><div><strong>비교 산업 B</strong><p>두 번째 산업의 최종수요 증가</p></div></div><label><span>산업 선택</span><select id="cmp-b" disabled></select></label><label><span>수요 증가액 (억원)</span><input id="cmp-amount-b" type="number" min="0.01" step="any" value="100" disabled></label></div></div>
+          <div class="compare-action"><button id="cmp-run" type="button" class="btn btn-primary" disabled>두 산업 비교하기 ↗</button><span id="cmp-status" role="status" aria-live="polite">분석 데이터부터 불러오세요.</span></div>
+          <div id="compare-results" class="compare-output" hidden>
+            <div class="compare-result-head"><div><span class="eyebrow">COMPARISON REPORT</span><h2 id="compare-result-title">산업 비교 결과</h2></div><button id="cmp-download" type="button" class="btn btn-outline">비교 결과 CSV ↓</button></div>
+            <div class="compare-legends"><span><i class="legend-dot blue"></i><strong id="compare-name-a">산업 A</strong></span><span><i class="legend-dot teal"></i><strong id="compare-name-b">산업 B</strong></span></div>
+            <div id="compare-kpis" class="compare-kpi-grid"></div>
+            <div class="surface chart-panel"><div class="result-section-head"><div><span class="eyebrow">IMPACT BY METRIC</span><h3>지표별 파급효과</h3></div><span class="chip">금액 · 억원</span></div><div id="compare-bars" class="compare-bars"></div></div>
+            <div class="surface chart-panel"><div class="result-section-head"><div><span class="eyebrow">PRODUCTION DISTRIBUTION</span><h3>두 산업이 유발한 주요 산업의 생산액</h3></div><span class="chip">각 시나리오별 상위 산업</span></div><div id="compare-sector-bars" class="compare-bars"></div></div>
+            <div class="surface narrative-panel"><div class="narrative-head"><span class="eyebrow">AUTO INTERPRETATION</span><h3>분석 결과 자동 해설</h3></div><div id="compare-narrative" class="narrative-text"></div><p class="fineprint">이 해설은 표시된 계수 및 산출 결과의 상대적 크기를 자동 설명합니다. 특정 정책의 실효성·인과효과를 증명하지 않습니다.</p></div>
+          </div>
+        </section>
+
+        <section class="view" data-page="methods" aria-labelledby="methods-title" hidden>
+          <div class="page-heading"><div><span class="eyebrow">04 / METHODOLOGY</span><h1 id="methods-title">분석의 <em>원리와 한계</em></h1><p>웹앱이 무엇을 계산하고 어떤 가정 아래 결과를 해석해야 하는지 확인합니다.</p></div></div>
+          <div class="method-intro surface"><span class="eyebrow">HOW IT WORKS</span><h2>최종수요 충격을 산업 간 연결구조에 적용합니다.</h2><p>생산에 사용되는 국산·수입 중간재 투입관계와 한국은행의 유발계수행렬을 활용합니다. 선택 산업의 국산품 최종수요가 증가할 때 직·간접적으로 발생하는 효과를 계산합니다.</p><div class="method-flow"><span>국산품 최종수요 증가 Δf</span><b>→</b><span>유발계수행렬 L · V · M</span><b>→</b><span>생산·부가가치·수입 유발효과</span></div></div>
+          <div class="formula-grid"><article class="surface formula-card"><span>01 · 생산유발효과</span><h3>Δx = L × Δf</h3><p>L = (I − Aᵈ)⁻¹</p><small>산업의 중간재 거래를 포함한 직·간접 총산출 유발액입니다.</small></article><article class="surface formula-card"><span>02 · 부가가치유발효과</span><h3>Δv = V × Δf</h3><p>V = diag(v) × L</p><small>노동소득·영업잉여 등 각 산업에서 발생하는 국내 부가가치 유발액입니다.</small></article><article class="surface formula-card"><span>03 · 수입유발효과</span><h3>Δm = M × Δf</h3><p>M = Aᵐ × L</p><small>생산을 충족하기 위해 투입되는 수입 중간재에 따른 유발액입니다.</small></article></div>
+          <div class="method-two"><div class="surface explainer"><span class="eyebrow">DATA & UNITS</span><h3>자료와 단위</h3><dl><div><dt>기준 연도</dt><dd>2023년</dd></div><div><dt>산업분류</dt><dd>33 / 83 / 165 / 380개 부문</dd></div><div><dt>분석 대상</dt><dd>생산자가격 투입산출표</dd></div><div><dt>원본 거래표 단위</dt><dd>백만원</dd></div><div><dt>사용자 입력·결과</dt><dd>억원 (1억원 = 100백만원)</dd></div><div><dt>유발계수·투입계수</dt><dd>무차원</dd></div></dl></div><div class="surface explainer"><span class="eyebrow">INTERPRETATION</span><h3>주의할 점</h3><ul class="caution-list"><li>2023년 고정 투입계수를 사용한 정태적 시뮬레이션입니다.</li><li>생산유발액은 중간거래가 포함된 총산출로, GDP 증가액과 다릅니다.</li><li>물가·공급능력·기술변화·유발 효과의 실현 여부는 반영하지 않습니다.</li><li>입력한 충격은 국산품에 대한 최종수요 증가를 가정합니다.</li><li>서로 다른 산업분류 수준의 결과는 집계 방식에 따라 차이가 날 수 있습니다.</li></ul></div></div>
+          <div class="surface validation-panel"><div><span class="eyebrow">MATRIX VALIDATION</span><h3>계수행렬 검증</h3><p>Excel을 불러올 때 3개 행렬 항등식의 최대 절댓값 잔차를 검사합니다. 검증 기준은 1×10⁻⁷ 미만입니다.</p></div><pre id="validation">Excel을 불러오면 검증 결과가 여기에 표시됩니다.</pre></div>
+          <div class="surface references"><span class="eyebrow">REFERENCES</span><h3>원자료 및 기술 참고</h3><ul><li><a href="https://www.bok.or.kr/portal/bbs/B0000501/view.do?menuNo=201264&amp;nttId=10093668" target="_blank" rel="noopener">한국은행 · 2023년 산업연관표(연장표) 작성 결과 ↗</a></li><li><a href="https://github.com/profguclass/Sample_IO" target="_blank" rel="noopener">교수님 실습 예시 · Sample_IO ↗</a></li><li><a href="https://pyodide.org/en/stable/" target="_blank" rel="noopener">Pyodide · 웹 브라우저 Python 실행 환경 ↗</a></li><li><a href="https://docs.github.com/ko/pages" target="_blank" rel="noopener">GitHub Pages · 정적 웹 배포 안내 ↗</a></li></ul></div>
+        </section>
+      </main>
+      <footer class="footer"><span>© 2026 IO Insight · 산업조직론 과제물 1</span><span>Data: Bank of Korea · Input–Output Tables 2023</span></footer>
+    </div>
+  </div>
+</body>
+</html>
