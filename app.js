@@ -129,9 +129,27 @@ async function loadWorkbook(){
   $('load').textContent='데이터 불러오는 중…';
   try{
     message(`${item.label}의 Excel 파일을 내려받는 중…`);
-    const response=await fetch('./'+item.file);
-    if(!response.ok)throw Error('Excel 다운로드 실패 (HTTP '+response.status+')');
-    const buffer=await response.arrayBuffer();
+    // GitHub에 업로드된 파일의 위치가 저장소 최상위 또는 data/일 수 있으므로 둘 다 확인합니다.
+    const candidates=['./'+item.file,'./data/'+item.file];
+    let buffer=null;
+    const failures=[];
+    for(const filePath of candidates){
+      try{
+        message(`${item.label} Excel 경로 확인 중: ${filePath}`);
+        const response=await fetch(filePath,{cache:'no-store'});
+        if(!response.ok){failures.push(`${filePath}: HTTP ${response.status}`);continue;}
+        const downloaded=await response.arrayBuffer();
+        // 잘못된 배포 설정이 200 응답에 HTML을 반환하는 경우도 감지합니다.
+        const signature=new Uint8Array(downloaded,0,Math.min(4,downloaded.byteLength));
+        if(signature.length<4||signature[0]!==80||signature[1]!==75){
+          failures.push(`${filePath}: Excel이 아닌 다른 파일이 반환됨`);continue;
+        }
+        buffer=downloaded;
+        break;
+      }catch(fetchError){failures.push(`${filePath}: ${fetchError.message}`);}
+    }
+    if(!buffer)throw Error('Excel 파일을 찾지 못했습니다. '+failures.join(' / '));
+    message(`${item.label} Excel 다운로드 완료 · Python 분석 엔진 실행 중…`);
     const info=await call('init',{buffer,count:item.count});
     if(info.count!==item.count||!Array.isArray(info.sectors)||info.sectors.length!==item.count)throw Error('산업 수가 일치하지 않습니다.');
     activeLevel=key;
@@ -157,7 +175,7 @@ async function loadWorkbook(){
     activeLevel=null;
     sectors=[];
     setReady(false);
-    message('불러오기 실패: '+error.message+' — data/ 파일과 인터넷 연결을 확인하세요.','bad');
+    message('불러오기 실패: '+error.message+' — 오류가 Python 실행 환경 단계라면 브라우저의 CDN 접근 및 인터넷 연결도 확인하세요.','bad');
   }finally{
     loading=false;
     $('load').disabled=false;
