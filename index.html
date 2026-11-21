@@ -14,14 +14,24 @@
     <aside class="sidebar" aria-label="주 메뉴와 데이터 설정">
       <div class="brand">
         <span class="brand-symbol" aria-hidden="true">▦</span>
-        <div><div class="brand-name">IO <span>Insight</span></div><span class="brand-sub">2023 · Input–Output Analytics</span></div>
+        <div><div class="brand-name">IO <span>Insight</span></div><span class="brand-sub">2023 · Input–Output Analytics V4</span></div>
       </div>
       <p class="nav-heading">WORKSPACE</p>
       <nav class="nav-list" aria-label="분석 페이지">
+        <span class="nav-section-label">시작하기</span>
         <button class="nav-link active" type="button" data-nav="dashboard" aria-current="page"><span class="nav-symbol">◫</span> 대시보드</button>
+        <span class="nav-section-label">데이터 및 구조</span>
         <button class="nav-link" type="button" data-nav="explore"><span class="nav-symbol">▤</span> 데이터 탐색</button>
+        <button class="nav-link" type="button" data-nav="rank"><span class="nav-symbol">▥</span> 파급효과 순위</button>
+        <button class="nav-link" type="button" data-nav="heatmap"><span class="nav-symbol">▦</span> 산업연관 히트맵</button>
+        <button class="nav-link" type="button" data-nav="network"><span class="nav-symbol">◎</span> 산업연관 네트워크 <span class="nav-new">NEW</span></button>
+        <span class="nav-section-label">효과 및 비교</span>
         <button class="nav-link" type="button" data-nav="simulate"><span class="nav-symbol">⌁</span> 유발효과 분석</button>
-        <button class="nav-link" type="button" data-nav="compare"><span class="nav-symbol">▥</span> 산업 간 비교</button>
+        <button class="nav-link" type="button" data-nav="decompose"><span class="nav-symbol">≈</span> 직접·간접효과 분해</button>
+        <button class="nav-link" type="button" data-nav="compare"><span class="nav-symbol">⇄</span> 산업 간 비교</button>
+        <span class="nav-section-label">응용 및 보고서</span>
+        <button class="nav-link" type="button" data-nav="policy"><span class="nav-symbol">◇</span> 정책 시나리오</button>
+        <button class="nav-link" type="button" data-nav="report"><span class="nav-symbol">▤</span> 산업 보고서</button>
         <button class="nav-link" type="button" data-nav="methods"><span class="nav-symbol">ⓘ</span> 분석 방법 안내</button>
       </nav>
       <div class="dataset-box" aria-label="분석 데이터 설정">
@@ -44,8 +54,8 @@
 
     <div class="workspace">
       <header class="topbar">
-        <div class="topbar-location"><span>ANALYTICS</span><span class="slash">/</span><strong id="current-page">대시보드</strong></div>
-        <div class="topbar-right"><span class="data-pill" id="ready-badge"><span class="pill-dot"></span>데이터 미연결</span><span class="year-badge">2023 DATA</span></div>
+        <div class="topbar-location"><span>IO INSIGHT</span><span class="slash">/</span><strong id="current-page">대시보드</strong></div>
+        <div class="topbar-right"><span class="data-pill" id="ready-badge"><span class="pill-dot"></span>데이터 미연결</span><span class="year-badge">V4 · 2023 DATA</span></div>
       </header>
       <main id="main-content">
         <section class="view" data-page="dashboard" aria-labelledby="dashboard-title">
@@ -54,7 +64,7 @@
               <span class="hero-tag"><span class="tag-dot"></span> BANK OF KOREA DATA · 2023</span>
               <h1 id="dashboard-title">산업의 연결을<br><em>숫자로 읽다.</em></h1>
               <p>2023년 산업연관표를 바탕으로 산업별 거래구조를 탐색하고, 최종수요 변화가 생산·부가가치·수입에 미치는 파급효과를 분석합니다.</p>
-              <div class="hero-actions"><button type="button" class="btn btn-white" data-nav="simulate">유발효과 분석하기 <span>↗</span></button><button type="button" class="btn btn-ghost" data-nav="compare">산업 비교하기 <span>→</span></button></div>
+              <div class="hero-actions"><button type="button" class="btn btn-white" data-nav="simulate">유발효과 분석하기 <span>↗</span></button><button type="button" class="btn btn-ghost" data-nav="rank">산업 순위 보기 <span>→</span></button></div>
             </div>
             <div class="hero-art" aria-hidden="true"><div class="orbit orbit-outer"></div><div class="orbit orbit-mid"></div><div class="orbit orbit-inner"></div><div class="orb orb-a"></div><div class="orb orb-b"></div><div class="orb orb-c"></div><span class="orbit-center">IO<span>2023</span></span><span class="art-label label-a">PRODUCTION</span><span class="art-label label-b">VALUE ADDED</span><span class="art-label label-c">IMPORTS</span></div>
           </div>
@@ -80,6 +90,15 @@
               <div class="steps"><div class="step-row"><span>01</span><div><strong>Excel 데이터 불러오기</strong><p>왼쪽에서 산업분류를 선택합니다.</p></div></div><div class="step-row"><span>02</span><div><strong>거래표·계수표 살펴보기</strong><p>산업코드와 산업명으로 검색합니다.</p></div></div><div class="step-row"><span>03</span><div><strong>최종수요 변화 분석</strong><p>생산·부가가치·수입유발액을 계산합니다.</p></div></div><div class="step-row"><span>04</span><div><strong>산업 간 결과 비교</strong><p>두 시나리오를 비교하고 CSV로 저장합니다.</p></div></div></div>
               <div id="dashboard-ready" class="ready-callout">현재 선택한 Excel을 먼저 불러오세요.</div>
             </article>
+          </div>
+          <div class="section-head feature-section-title"><div><span class="eyebrow">ANALYTICAL WORKBENCH · 06 TOOLS</span><h2>여섯 가지 심화 분석 도구</h2></div><p>동일한 2023년 한국은행 자료를 바탕으로 구조·파급효과·정책 시나리오를 탐색합니다.</p></div>
+          <div class="feature-grid">
+            <button type="button" class="feature-tile" data-nav="rank"><span class="feature-count">01</span><span class="feature-icon">▥</span><strong>산업별 파급효과 순위</strong><small>전체 산업의 생산·부가가치·수입 유발배율 비교</small><span class="feature-go">분석 열기 ↗</span></button>
+            <button type="button" class="feature-tile" data-nav="heatmap"><span class="feature-count">02</span><span class="feature-icon">▦</span><strong>산업연관구조 히트맵</strong><small>산업 간 투입계수를 색상 행렬로 시각화</small><span class="feature-go">분석 열기 ↗</span></button>
+            <button type="button" class="feature-tile" data-nav="report"><span class="feature-count">03</span><span class="feature-icon">▤</span><strong>산업별 상세 보고서</strong><small>산업별 요약·핵심 공급부문·PDF 인쇄</small><span class="feature-go">분석 열기 ↗</span></button>
+            <button type="button" class="feature-tile" data-nav="decompose"><span class="feature-count">04</span><span class="feature-icon">≈</span><strong>직접·간접효과 분해</strong><small>직접·1차·2차 이상 파급효과 계산</small><span class="feature-go">분석 열기 ↗</span></button>
+            <button type="button" class="feature-tile" data-nav="policy"><span class="feature-count">05</span><span class="feature-icon">◇</span><strong>정책 시나리오 분석</strong><small>동일 총수요의 산업별 배분안 비교</small><span class="feature-go">분석 열기 ↗</span></button>
+            <button type="button" class="feature-tile network-tile" data-nav="network"><span class="feature-count">06</span><span class="feature-icon">◎</span><strong>산업연관 네트워크</strong><small>선택 산업의 공급·사용 관계와 계수 확인</small><span class="feature-go">분석 열기 ↗</span></button>
           </div>
           <div class="source-strip"><span class="source-icon">ⓘ</span>출처: 한국은행 「2023년 산업연관표(연장표)」 · 생산자가격 기준 <a href="https://www.bok.or.kr/portal/bbs/B0000501/view.do?menuNo=201264&amp;nttId=10093668" target="_blank" rel="noopener">원자료 보기 ↗</a></div>
         </section>
@@ -111,6 +130,67 @@
           </div>
         </section>
 
+        <section class="view" data-page="rank" aria-labelledby="rank-title" hidden>
+          <div class="page-heading"><div><span class="eyebrow">05 / IMPACT LEADERBOARD</span><h1 id="rank-title">산업별 <em>파급효과 순위</em></h1><p>모든 산업에 각각 동일한 국산품 최종수요 100억원이 증가한다고 가정해 유발계수의 열 합계를 비교합니다.</p></div><span class="section-tag">동일 조건 · 100억원 / 산업</span></div>
+          <div class="surface filter-panel"><div class="panel-caption"><strong>순위 지표 선택</strong><span>원본 생산·부가가치·수입유발계수 기준</span></div><div class="filter-grid filter-three"><label><span>정렬 기준</span><select id="rank-metric" disabled><option value="production">생산유발액</option><option value="valueAdded">부가가치유발액</option><option value="imports">수입유발액</option></select></label><label><span>산업명·코드 검색</span><input id="rank-search" type="search" placeholder="산업 검색" disabled></label><div class="field-action"><button id="rank-download" class="btn btn-outline" type="button" disabled>전체 순위 CSV ↓</button></div></div></div>
+          <div class="result-cards v3-stats" id="rank-summary"><div class="stat"><p class="stat-title">데이터 준비</p><strong>미연결</strong></div></div>
+          <div class="surface chart-panel"><div class="result-section-head"><div><span class="eyebrow">INDUSTRY LEADERBOARD</span><h3 id="rank-chart-title">생산유발액 상위 12개 산업</h3></div><span class="chip">동일 100억원 충격</span></div><div id="rank-bars" class="bar-chart"><p class="fineprint">Excel을 먼저 불러오세요.</p></div></div>
+          <div class="surface result-panel"><div class="result-section-head"><h3>산업별 전체 순위</h3><span id="rank-count" class="chip">미연결</span></div><div class="table-wrap v3-table-scroll"><table><thead><tr><th>순위</th><th>산업</th><th class="number">생산유발액</th><th class="number">부가가치유발액</th><th class="number">수입유발액</th></tr></thead><tbody id="rank-rows"><tr><td colspan="5" class="empty">분석 데이터를 불러와 주세요.</td></tr></tbody></table></div><p class="fineprint">단위: 억원. 각 행은 해당 산업에만 100억원 수요가 증가한 별개의 실험이며, 전체 순위 산업을 동시에 지원한 결과가 아닙니다. 수입유발액이 큰 산업이 항상 정책적으로 우수하다는 뜻은 아닙니다.</p></div>
+        </section>
+
+        <section class="view" data-page="heatmap" aria-labelledby="heatmap-title" hidden>
+          <div class="page-heading"><div><span class="eyebrow">06 / INDUSTRIAL STRUCTURE</span><h1 id="heatmap-title">산업연관구조 <em>히트맵</em></h1><p>행은 중간재를 공급하는 산업, 열은 중간재를 사용하는 산업입니다. 선택 산업이 어떤 투입재에 의존하는지 확인합니다.</p></div><span class="section-tag">행: 공급 · 열: 사용</span></div>
+          <div class="surface filter-panel"><div class="panel-caption"><strong>행렬 탐색</strong><span>대분류 전체 33개, 더 세분화된 분류는 대상 중심 25개 부문 표시</span></div><div class="filter-grid filter-three"><label><span>계수행렬</span><select id="heat-kind" disabled><option value="Ad">국산투입계수 Ad</option><option value="Am">수입투입계수 Am</option><option value="L">생산유발계수 L</option></select></label><label><span>대상 산업(열)</span><select id="heat-sector" disabled></select></label><div class="field-action"><button id="heat-run" type="button" class="btn btn-primary" disabled>히트맵 생성 ↗</button></div></div></div>
+          <div class="surface heat-panel"><div class="result-section-head"><div><span class="eyebrow">MATRIX VIEW</span><h3 id="heat-heading">데이터 불러오기 필요</h3></div><span id="heat-scope" class="chip">–</span></div><div class="heat-tools"><span>낮은 계수</span><span class="heat-gradient" aria-hidden="true"></span><span>높은 계수</span><span class="fineprint">칸에 마우스를 올리거나 터치하면 값 표시</span></div><div id="heat-wrapper" class="heat-wrapper"><div class="empty">데이터를 불러오면 히트맵을 생성할 수 있습니다.</div></div><p id="heat-inspect" class="heat-inspect" role="status">셀을 클릭하거나 키보드로 선택하면 해당 산업 간 계수가 표시됩니다.</p><p class="fineprint" id="heat-note">Aᵈ와 Aᵐ은 해당 열의 생산액 1단위당 각 행 산업의 중간재 투입 비율입니다. L은 국산품 최종수요 1단위에 대한 산출 유발계수입니다.</p></div>
+          <div class="surface chart-panel"><div class="result-section-head"><div><span class="eyebrow">IMPORTANT INPUTS</span><h3 id="heat-top-heading">주요 투입 산업</h3></div><span class="chip">상위 10개</span></div><div id="heat-top" class="bar-chart"><p class="fineprint">히트맵을 생성하세요.</p></div></div>
+        </section>
+
+
+        <section class="view" data-page="network" aria-labelledby="network-title" hidden>
+          <div class="page-heading"><div><span class="eyebrow">06 / SUPPLY–USE NETWORK</span><h1 id="network-title">산업연관 <em>네트워크</em></h1><p>산업 하나를 중심으로 주요 국산 중간재 공급 산업과 해당 산업의 재화를 사용하는 산업을 양방향으로 탐색합니다.</p></div><span class="section-tag">국산투입계수 Aᵈ · 직접 관계</span></div>
+          <div class="surface filter-panel no-print"><div class="panel-caption"><strong>산업 및 네트워크 표시 조건</strong><span>연결선을 선택하면 원본 투입계수와 관계 설명을 확인할 수 있습니다.</span></div>
+            <div class="network-filters">
+              <label><span>중심 산업</span><select id="network-sector" disabled></select></label>
+              <label><span>방향별 최대 연결 수</span><select id="network-limit" disabled><option value="4">각 4개</option><option value="6" selected>각 6개</option><option value="8">각 8개</option><option value="10">각 10개</option><option value="12">각 12개</option></select></label>
+              <label><span>최소 투입계수</span><select id="network-threshold" disabled><option value="0">0 초과 (모두)</option><option value="0.001" selected>0.001 이상</option><option value="0.005">0.005 이상</option><option value="0.01">0.010 이상</option><option value="0.02">0.020 이상</option><option value="0.05">0.050 이상</option></select></label>
+              <div class="field-action"><button id="network-run" type="button" class="btn btn-primary" disabled>네트워크 그리기 ↗</button></div>
+            </div>
+            <p id="network-status" class="fineprint" role="status">산업분류 Excel을 불러오면 네트워크를 생성할 수 있습니다.</p>
+          </div>
+          <div id="network-results" hidden>
+            <div class="network-summary" id="network-kpis"></div>
+            <div class="surface network-panel">
+              <div class="result-section-head network-graph-header"><div><span class="eyebrow">DIRECT INPUT RELATIONSHIP</span><h3 id="network-heading">산업연관 관계</h3></div><button id="network-download" class="btn btn-outline" type="button">연결 데이터 CSV ↓</button></div>
+              <div class="network-legend"><span><i class="net-dot supplier"></i>공급 산업 → 중심 산업</span><span><i class="net-dot user"></i>중심 산업 → 사용 산업</span><span class="network-axis-note">선의 굵기 = 국산투입계수 상대 크기</span></div>
+              <div class="network-canvas" id="network-canvas" role="region" aria-label="산업 간 연결 네트워크 시각화"><div class="empty">네트워크 생성 버튼을 누르세요.</div></div>
+              <div class="network-detail" id="network-detail" aria-live="polite">연결된 산업 또는 선을 클릭하면 방향과 계수값이 표시됩니다.</div>
+              <p class="fineprint network-disclaimer">공급 관계는 Aᵈ[i, j], 사용 관계는 Aᵈ[j, k]를 표시합니다. 두 방향의 계수는 분모 산업이 서로 다를 수 있습니다. 이 그림은 기업별 거래망이나 실제 거래금액을 나타내지 않습니다. 자기 산업 투입은 연결선과 별도로 표시합니다.</p>
+            </div>
+            <div class="network-tables">
+              <div class="surface result-panel"><div class="result-section-head"><div><span class="eyebrow">UPSTREAM</span><h3>주요 공급 산업</h3></div><span class="chip">행 산업 → 중심 산업</span></div><div class="table-wrap"><table><thead><tr><th>공급 산업</th><th class="number">국산투입계수</th></tr></thead><tbody id="network-suppliers"></tbody></table></div></div>
+              <div class="surface result-panel"><div class="result-section-head"><div><span class="eyebrow">DOWNSTREAM</span><h3>주요 사용 산업</h3></div><span class="chip">중심 산업 → 열 산업</span></div><div class="table-wrap"><table><thead><tr><th>사용 산업</th><th class="number">국산투입계수</th></tr></thead><tbody id="network-users"></tbody></table></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" data-page="decompose" aria-labelledby="decompose-title" hidden>
+          <div class="page-heading"><div><span class="eyebrow">07 / IMPACT DECOMPOSITION</span><h1 id="decompose-title">직접·간접효과 <em>단계별 분해</em></h1><p>총생산유발액을 최초 최종수요에 해당하는 직접 산출, 1차 중간재 파급, 2차 이상 파급효과로 분해합니다.</p></div><span class="section-tag">Δx = Δf + AᵈΔf + 나머지</span></div>
+          <div class="surface input-panel"><div class="panel-caption"><strong>분해할 최종수요 설정</strong><span>하나의 산업에 대한 증가액을 설정합니다</span></div><div class="filter-grid filter-three"><label><span>분석 산업</span><select id="dec-sector" disabled></select></label><label><span>국산품 최종수요 증가 (억원)</span><input id="dec-amount" type="number" min="0.01" step="any" value="100" disabled></label><div class="field-action"><button id="dec-run" class="btn btn-primary" type="button" disabled>효과 분해하기 ↗</button></div></div><p id="dec-status" class="fineprint" role="status">분석 데이터를 먼저 불러오세요.</p></div>
+          <div id="dec-results" hidden><div class="result-cards v3-stats" id="dec-kpis"></div><div class="surface chart-panel"><div class="result-section-head"><h3>생산유발효과 구성</h3><span class="chip">단위 · 억원</span></div><div class="stacked-chart" id="dec-stacked"></div><div id="dec-explainer" class="insight-banner"></div></div><div class="surface result-panel"><div class="result-section-head"><h3>산업별 직접·간접 산출 분해</h3><button id="dec-download" class="btn btn-outline" type="button">분해 결과 CSV ↓</button></div><div class="table-wrap v3-table-scroll"><table><thead><tr><th>산업</th><th class="number">직접</th><th class="number">1차 간접</th><th class="number">2차 이상</th><th class="number">총생산</th></tr></thead><tbody id="dec-rows"></tbody></table></div><p class="fineprint">반올림으로 미세한 차이가 발생할 수 있습니다. ‘직접’은 최종수요 충격 Δf이며, 다른 산업의 중간재 산출은 간접효과로 계산합니다.</p></div></div>
+        </section>
+
+        <section class="view" data-page="policy" aria-labelledby="policy-title" hidden>
+          <div class="page-heading"><div><span class="eyebrow">08 / POLICY SCENARIOS</span><h1 id="policy-title">동일 규모 <em>정책 시나리오</em></h1><p>총최종수요 증가액을 동일하게 유지하며 두 산업 간 배분만 변경해 파급효과를 비교합니다. 실제 정책의 비용편익 분석은 아닙니다.</p></div><span class="section-tag">가상 수요 배분 · 금액 동일</span></div>
+          <div class="surface input-panel"><div class="panel-caption"><strong>배분할 총수요 설정</strong><span>두 산업의 국산품 최종수요 증가를 4가지 경우로 비교</span></div><div class="filter-grid filter-three"><label><span>산업 A</span><select id="policy-a" disabled></select></label><label><span>산업 B</span><select id="policy-b" disabled></select></label><label><span>전체 최종수요 증가액 (억원)</span><input id="policy-budget" type="number" min="0.01" step="any" value="1000" disabled></label></div><div class="slider-card"><div><strong>사용자 맞춤 배분</strong><span id="policy-split-label">A 60% · B 40%</span></div><input id="policy-split" type="range" min="0" max="100" step="5" value="60" disabled aria-label="A 산업 배분 비중"></div><div class="v3-actions"><button id="policy-run" class="btn btn-primary" type="button" disabled>4가지 시나리오 비교하기 ↗</button><span id="policy-status" class="fineprint" role="status">Excel을 먼저 불러오세요.</span></div></div>
+          <div id="policy-results" hidden><div class="surface chart-panel"><div class="result-section-head"><div><span class="eyebrow">ALLOCATION STRATEGIES</span><h3>시나리오별 유발효과</h3></div><button id="policy-download" class="btn btn-outline" type="button">시나리오 CSV ↓</button></div><div id="policy-bars" class="policy-bars"></div></div><div class="surface result-panel"><div class="result-section-head"><h3>동일 수요 규모의 결과 비교</h3><span class="chip">단위 · 억원</span></div><div class="table-wrap v3-table-scroll"><table><thead><tr><th>배분 시나리오</th><th class="number">생산</th><th class="number">부가가치</th><th class="number">수입</th><th class="number">생산배율</th></tr></thead><tbody id="policy-rows"></tbody></table></div><div id="policy-narrative" class="insight-banner"></div></div></div>
+        </section>
+
+        <section class="view" data-page="report" aria-labelledby="report-title" hidden>
+          <div class="page-heading"><div><span class="eyebrow">09 / SECTOR REPORT</span><h1 id="report-title">산업별 <em>분석 보고서</em></h1><p>산업 하나를 선택하면 경제적 파급효과, 주요 투입 관계, 주의사항과 공식 출처를 한 페이지로 정리합니다.</p></div><span class="section-tag">인쇄 · PDF 저장 지원</span></div>
+          <div class="surface filter-panel no-print"><div class="panel-caption"><strong>보고서 생성</strong><span>국산품 최종수요 100억원 증가 기준으로 통일</span></div><div class="filter-grid filter-three"><label><span>분석 산업</span><select id="report-sector" disabled></select></label><div class="field-action"><button id="report-run" class="btn btn-primary" type="button" disabled>분석 보고서 생성 ↗</button></div><div class="field-action"><button id="report-print" class="btn btn-outline" type="button" disabled>인쇄 / PDF 저장 ↓</button></div></div><p id="report-status" class="fineprint" role="status">분석 데이터를 먼저 불러오세요.</p></div>
+          <article id="print-report" class="surface report-paper" hidden><div class="report-head"><span class="eyebrow">IO INSIGHT / 2023 ECONOMIC ANALYSIS</span><h2 id="report-name">산업 분석 보고서</h2><p id="report-subtitle" class="muted"></p></div><div id="report-kpis" class="result-cards v3-stats"></div><div class="report-grid"><section><h3>생산유발액 상위 산업</h3><div id="report-beneficiaries" class="v3-compact-list"></div></section><section><h3>주요 국산 중간재 투입 산업</h3><div id="report-suppliers" class="v3-compact-list"></div></section></div><div id="report-interpret" class="insight-banner"></div><div class="report-source"><strong>분석 조건과 한계</strong><p>2023년 한국은행 생산자가격 산업연관표의 고정 투입계수를 사용한 가상 분석입니다. 국산품 최종수요 100억원 증가를 가정합니다. 총생산유발액은 GDP 증가액과 다르고, 실제 정책효과를 예측하지 않습니다.</p><p>자료: <a href="https://www.bok.or.kr/portal/bbs/B0000501/view.do?menuNo=201264&amp;nttId=10093668">한국은행 「2023년 산업연관표(연장표)」</a> · 자체 계산</p></div></article>
+        </section>
+
         <section class="view" data-page="methods" aria-labelledby="methods-title" hidden>
           <div class="page-heading"><div><span class="eyebrow">04 / METHODOLOGY</span><h1 id="methods-title">분석의 <em>원리와 한계</em></h1><p>웹앱이 무엇을 계산하고 어떤 가정 아래 결과를 해석해야 하는지 확인합니다.</p></div></div>
           <div class="method-intro surface"><span class="eyebrow">HOW IT WORKS</span><h2>최종수요 충격을 산업 간 연결구조에 적용합니다.</h2><p>생산에 사용되는 국산·수입 중간재 투입관계와 한국은행의 유발계수행렬을 활용합니다. 선택 산업의 국산품 최종수요가 증가할 때 직·간접적으로 발생하는 효과를 계산합니다.</p><div class="method-flow"><span>국산품 최종수요 증가 Δf</span><b>→</b><span>유발계수행렬 L · V · M</span><b>→</b><span>생산·부가가치·수입 유발효과</span></div></div>
@@ -120,7 +200,7 @@
           <div class="surface references"><span class="eyebrow">REFERENCES</span><h3>원자료 및 기술 참고</h3><ul><li><a href="https://www.bok.or.kr/portal/bbs/B0000501/view.do?menuNo=201264&amp;nttId=10093668" target="_blank" rel="noopener">한국은행 · 2023년 산업연관표(연장표) 작성 결과 ↗</a></li><li><a href="https://github.com/profguclass/Sample_IO" target="_blank" rel="noopener">교수님 실습 예시 · Sample_IO ↗</a></li><li><a href="https://pyodide.org/en/stable/" target="_blank" rel="noopener">Pyodide · 웹 브라우저 Python 실행 환경 ↗</a></li><li><a href="https://docs.github.com/ko/pages" target="_blank" rel="noopener">GitHub Pages · 정적 웹 배포 안내 ↗</a></li></ul></div>
         </section>
       </main>
-      <footer class="footer"><span>© 2026 IO Insight · 산업조직론 과제물 1</span><span>Data: Bank of Korea · Input–Output Tables 2023</span></footer>
+      <footer class="footer"><span>© 2026 IO Insight V4 · 산업조직론 과제물 1</span><span>Data: Bank of Korea · Input–Output Tables 2023</span></footer>
     </div>
   </div>
 </body>

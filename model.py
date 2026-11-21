@@ -17,6 +17,9 @@ L = None
 M = None
 V = None
 residuals = {}
+A_d_data = None
+A_m_data = None
+v_data = None
 
 
 def _emit(obj):
@@ -47,7 +50,7 @@ def _matrix(sheet_name):
 
 def initialize(raw, expected_count):
     """Excel을 로드하며 분류별로 산업 코드를 읽고 행렬 관계를 검증한다."""
-    global book, codes, names, sheets, L, M, V, residuals
+    global book, codes, names, sheets, L, M, V, residuals, A_d_data, A_m_data, v_data
     required = (
         '총투입계수(A)', '국산투입계수(Ad)', '수입투입계수(Am)',
         '생산유발계수', '수입유발계수', '부가가치유발계수',
@@ -81,6 +84,7 @@ def initialize(raw, expected_count):
         raise ValueError('부가가치계수 행(9690)을 찾지 못했습니다.')
     cindex = {_code(c): i for i, c in enumerate(total[4]) if c is not None}
     v = np.array([value_added[cindex[c]] for c in codes], dtype=float)
+    A_d_data, A_m_data, v_data = A_d, A_m, v
     identity = np.eye(n)
     residuals = {
         '생산 (I − Ad)L = I': float(np.max(np.abs((identity-A_d) @ L-identity))),
@@ -151,3 +155,154 @@ def simulate(payload_json):
                   'imports': float(m.sum()), 'valueAdded': float(v.sum()),
                   'productionMultiplier': float(x.sum()/f.sum()),
                   'rows': output})
+
+
+def _check_ready():
+    if L is None or A_d_data is None:
+        raise ValueError('산업분류 Excel 데이터를 먼저 불러오세요.')
+
+
+def _demand_vector(items):
+    _check_ready()
+    f = np.zeros(len(codes), dtype=float)
+    lookup = {c: i for i, c in enumerate(codes)}
+    for item in items:
+        code = str(item['code'])
+        amount = float(item['amount'])
+        if code not in lookup or not np.isfinite(amount) or amount < 0 or amount > 1e16:
+            raise ValueError('산업코드 또는 수요 증가액이 유효하지 않습니다.')
+        f[lookup[code]] += amount
+    if f.sum() <= 0:
+        raise ValueError('수요 증가액이 0보다 커야 합니다.')
+    return f
+
+
+def rank_industries():
+    """각 부문에서 개별적으로 국산품 최종수요가 100억원 늘어나는 동일 조건을 비교한다."""
+    _check_ready()
+    prod = L.sum(axis=0)
+    added = V.sum(axis=0)
+    imported = M.sum(axis=0)
+    records = []
+    for i, (code, name) in enumerate(zip(codes, names)):
+        records.append({
+            'code': code, 'name': name,
+            'production': float(prod[i] * 100),
+            'valueAdded': float(added[i] * 100),
+            'imports': float(imported[i] * 100),
+            'productionMultiplier': float(prod[i]),
+            'valueAddedMultiplier': float(added[i]),
+            'importMultiplier': float(imported[i])
+        })
+    return _emit({'demand': 100, 'rows': records, 'count': len(records)})
+
+
+def structure(target_code, matrix_kind='Ad'):
+    """행=투입 공급 산업, 열=사용 산업. 부문 수 33 초과면 대상 열의 주요 24개 공급 산업 부분행렬."""
+    _check_ready()
+    which = {'Ad': A_d_data, 'Am': A_m_data, 'L': L}
+    if matrix_kind not in which:
+        raise ValueError('지원하지 않는 행렬입니다.')
+    lookup = {c: i for i, c in enumerate(codes)}
+    if target_code not in lookup:
+        raise ValueError('선택 산업코드를 확인하세요.')
+    j = lookup[target_code]
+    matrix = which[matrix_kind]
+    n = len(codes)
+    if n <= 33:
+        indices = list(range(n))
+    else:
+        leading = sorted(range(n), key=lambda i: (float(matrix[i, j]), -i), reverse=True)
+        indices = [j] + [i for i in leading if i != j][:24]
+    labels = [{'code': codes[i], 'name': names[i]} for i in indices]
+    sub = matrix[np.ix_(indices, indices)]
+    strongest = sorted(range(n), key=lambda i: float(matrix[i, j]), reverse=True)[:12]
+    top = [{'code': codes[i], 'name': names[i], 'coefficient': float(matrix[i, j])} for i in strongest]
+    return _emit({'kind': matrix_kind, 'target': {'code': codes[j], 'name': names[j]},
+                  'selection': '전체 33개 부문' if n <= 33 else '대상 산업 중심 상위 25개 부문(부분행렬)',
+                  'labels': labels, 'cells': sub.tolist(), 'maxValue': float(np.max(sub)),
+                  'topInputs': top, 'count': n})
+
+
+def decompose(payload_json):
+    """총산출: 직접 Δf, 1차 간접 Ad Δf, 2차 이상 (L−I−Ad)Δf."""
+    f = _demand_vector(json.loads(payload_json))
+    direct = f
+    first = A_d_data @ f
+    total = L @ f
+    higher = total - direct - first
+    # 공개된 행렬은 반올림 계수이므로 계산 오차 1e-6 백만원 이하만 0으로 보정
+    higher[np.abs(higher) < 1e-6] = 0
+    results = []
+    for code, name, direct_i, first_i, higher_i, total_i in zip(codes, names, direct, first, higher, total):
+        results.append({'code': code, 'name': name, 'direct': float(direct_i / 100),
+                        'first': float(first_i / 100), 'higher': float(higher_i / 100),
+                        'production': float(total_i / 100)})
+    results.sort(key=lambda x: x['production'], reverse=True)
+    return _emit({'demand': float(f.sum() / 100), 'direct': float(direct.sum() / 100),
+                  'first': float(first.sum() / 100), 'higher': float(higher.sum() / 100),
+                  'production': float(total.sum() / 100), 'rows': results})
+
+
+def industry_profile(target_code):
+    """100억원 표준 충격에 대한 산업 요약. 단순 정태적 파급효과, 정책 성과 아님."""
+    _check_ready()
+    lookup = {c: i for i, c in enumerate(codes)}
+    if target_code not in lookup:
+        raise ValueError('선택 산업코드가 없습니다.')
+    j = lookup[target_code]
+    output = L[:, j]
+    suppliers = sorted(range(len(codes)), key=lambda i: A_d_data[i, j], reverse=True)[:8]
+    beneficiaries = sorted(range(len(codes)), key=lambda i: output[i], reverse=True)[:8]
+    return _emit({'code': codes[j], 'name': names[j], 'demand': 100,
+                  'production': float(output.sum() * 100),
+                  'valueAdded': float(V[:, j].sum() * 100),
+                  'imports': float(M[:, j].sum() * 100),
+                  'productionMultiplier': float(output.sum()),
+                  'valueAddedMultiplier': float(V[:, j].sum()),
+                  'importMultiplier': float(M[:, j].sum()),
+                  'firstRound': float(A_d_data[:, j].sum() * 100),
+                  'direct': 100,
+                  'indirect': float((output.sum()-1) * 100),
+                  'topSuppliers': [{'code':codes[i], 'name':names[i], 'coefficient':float(A_d_data[i,j])}
+                                  for i in suppliers],
+                  'topBeneficiaries': [{'code':codes[i], 'name':names[i], 'production':float(output[i]*100)}
+                                       for i in beneficiaries]})
+
+
+# V4: 원본 국산투입계수(Ad)의 공급/사용 연결을 방향별로 조회한다.
+def industry_network(target_code, limit=6, threshold=0.001):
+    """행 산업 → 열 산업의 직접 국산 중간재 투입계수 기반 국소 네트워크.
+
+    상류: Ad[i,j] = 선택 j의 산출 1단위에 필요한 공급 i의 중간재
+    하류: Ad[j,k] = 사용자 k의 산출 1단위에 필요한 선택 j의 중간재
+    두 계수의 분모는 각각 j와 k의 산출로 다르며 실제 거래액은 아니다.
+    """
+    _check_ready()
+    idx = {c: i for i, c in enumerate(codes)}
+    if target_code not in idx:
+        raise ValueError('선택 산업코드가 없습니다.')
+    try:
+        limit = int(limit)
+        threshold = float(threshold)
+    except (TypeError, ValueError) as exc:
+        raise ValueError('연결 산업 수와 최소 계수 조건을 확인하세요.') from exc
+    if not 1 <= limit <= 12 or not np.isfinite(threshold) or not 0 <= threshold <= 1:
+        raise ValueError('연결 개수는 1~12개, 최소 계수는 0~1 범위여야 합니다.')
+    j = idx[target_code]
+    matrix = A_d_data
+    def eligible(value):
+        return np.isfinite(value) and value > 0 and value >= threshold
+    suppliers = sorted(((i, float(matrix[i, j])) for i in range(len(codes)) if i != j and eligible(matrix[i,j])), key=lambda item:(-item[1], item[0]))
+    users = sorted(((k, float(matrix[j, k])) for k in range(len(codes)) if k != j and eligible(matrix[j,k])), key=lambda item:(-item[1], item[0]))
+    def make(items):
+        return [{'code':codes[i], 'name':names[i], 'coefficient':w} for i,w in items[:limit]]
+    return _emit({
+        'target':{'code':codes[j], 'name':names[j]},
+        'suppliers':make(suppliers), 'users':make(users),
+        'supplierMatches':len(suppliers), 'userMatches':len(users),
+        'selfCoefficient':float(matrix[j,j]),
+        'domesticInputRatio':float(matrix[:,j].sum()),
+        'limit':limit, 'threshold':threshold, 'count':len(codes),
+        'basis':'2023년 생산자가격 국산투입계수(Ad) · 행=공급, 열=사용'
+    })

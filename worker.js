@@ -36,6 +36,23 @@ async function handle({id, type, payload}){
       py.globals.set('sheet_input', payload.sheet);
       py.globals.set('row_input', payload.row || '');
       result = py.runPython('explore(sheet_input, row_input)');
+    } else if (type === 'rank'){
+      result = py.runPython('rank_industries()');
+    } else if (type === 'structure'){
+      py.globals.set('target_input', payload.code);
+      py.globals.set('kind_input', payload.kind);
+      result = py.runPython('structure(target_input, kind_input)');
+    } else if (type === 'network'){
+      py.globals.set('network_code', payload.code);
+      py.globals.set('network_limit', payload.limit);
+      py.globals.set('network_threshold', payload.threshold);
+      result = py.runPython('industry_network(network_code, network_limit, network_threshold)');
+    } else if (type === 'decompose'){
+      py.globals.set('decompose_input', JSON.stringify(payload));
+      result = py.runPython('decompose(decompose_input)');
+    } else if (type === 'profile'){
+      py.globals.set('profile_code', payload.code);
+      result = py.runPython('industry_profile(profile_code)');
     } else if (type === 'simulate'){
       py.globals.set('scenario_input', JSON.stringify(payload));
       result = py.runPython('simulate(scenario_input)');
