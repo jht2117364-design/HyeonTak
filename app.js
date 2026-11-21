@@ -129,7 +129,7 @@ async function loadWorkbook(){
   $('load').textContent='데이터 불러오는 중…';
   try{
     message(`${item.label}의 Excel 파일을 내려받는 중…`);
-    const response=await fetch('./data/'+item.file);
+    const response=await fetch('./'+item.file);
     if(!response.ok)throw Error('Excel 다운로드 실패 (HTTP '+response.status+')');
     const buffer=await response.arrayBuffer();
     const info=await call('init',{buffer,count:item.count});
